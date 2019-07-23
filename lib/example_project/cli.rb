@@ -33,18 +33,21 @@ class ExampleProject::Cli
     song_name = gets.strip
     puts "Please enter a genre name"
     genre_name = gets.strip
+    genre = Genre.find_or_create_by(name: genre_name)
     puts "Please enter an artist name"
     artist_name = gets.strip
+    artist = Artist.find_or_create_by(name: artist_name)
     puts "Thank you, creating song..."
-    song = ExampleProject::Song.find_or_create({name: song_name, artist_name: artist_name, genre_name: genre_name})
+    song = Song.find_or_create_by(name: song_name, artist: artist, genre: genre)
     sleep(1)
     puts "#{song.name} has been successfully created."
   end
 
   def list_songs
     puts ""
-    ExampleProject::Song.all.each.with_index(1) do |song, index|
-      puts "#{index}. #{song.name} - artist: #{song.artist_name} - genre: #{song.genre_name}"
+    binding.pry
+    Song.all.each.with_index(1) do |song, index|
+      puts "#{index}. #{song.name} - artist: #{song.artist.name} - genre: #{song.genre.name}"
     end
   end
 end
